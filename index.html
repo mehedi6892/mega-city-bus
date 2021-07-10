@@ -5,11 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bus Ticket</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap"
         rel="stylesheet">
     <!-- Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+    
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -33,8 +36,6 @@
             <h1>Mega City Bus</h1>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
         </div>
-
-
         <div class="booking-form">
             <h3>Explore By Bus</h3>
 
@@ -61,21 +62,36 @@
             </div>
             <div class="inputs">
                 <div class="input-group f-class">
-                <div>
-                    <label for="">First Class ($150)</label>
-                    <input class="inp-style inp-width" type="number" name="">
+                    <div>
+                        <label for="">First Class ($150)</label>
+                     
+                        <input id="first-count" type="text" class=" text-center" value="0">
+                    </div>
+                    <div class="plus-minus-btn">
+                        <p> 
+                            <span> 
+                                <button onclick="firstClassBusInfo('first', true)"  class="btn btn-default"><i class="fas fa-plus"></i></button>
+                            </span> 
+                            <span >
+                                <button onclick="firstClassBusInfo('first', false)" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                            </span>
+                        </p>      
+                    </div>
                 </div>
-                <div class="plus-minus-btn">
-                    <p>+ -</p>
-                </div>
-            </div>
                 <div class="input-group f-class">
                     <div>
                         <label for="">Economy ($100)</label>
-                        <input class="inp-style inp-width" type="number" name="">
+                        <input id="economy-count" type="text" class="form-control text-center" value="0">
                     </div>
                     <div class="plus-minus-btn">
-                        <p> <span>+</span> <span>-</span> </p>
+                        <p> 
+                            <span> 
+                                <button onclick="firstClassBusInfo('economy',true)" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                            </span> 
+                            <span>
+                                <button onclick="firstClassBusInfo('economy',false)" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                            </span>
+                        </p> 
                     </div>
                 </div>
 
@@ -86,7 +102,7 @@
                         <p>Subtotal</p>
                     </div>
                     <div class="right">
-                        <p>$500</p>
+                        <p id="sub-total">$ 0</p>
                     </div>
                 </div>
 
@@ -95,7 +111,7 @@
                         <p>Charge 10% VAT</p>
                     </div>
                     <div class="right">
-                        <p>$50</p>
+                        <p id="tax-amount">$0</p>
                     </div>
                 </div>
                 <hr>
@@ -104,15 +120,58 @@
                         <h4>Total</h4>
                     </div>
                     <div class="right">
-                        <p>$550</p>
+                        <p id="total-price">$0</p>
                     </div>
                 </div>
             </div>
-            <button class="btn-style">Book Now</button>
-        </div>
+            <button id="submit-area" class="btn-style">Book Now</button>
+        </div>     
     </main>
 
-    <!--Thank You-->
+    <script>
+        function firstClassBusInfo(busSeat,isIncrease){
+           const busClassInput = document.getElementById(busSeat +'-count');
+           const busClassCount = parseInt(getInputValue(busSeat));
+           let busClassNewCount = busClassCount;
+           if(isIncrease == true){
+               busClassNewCount = busClassCount + 1;
+           }
+           if(isIncrease == false && busClassCount> 0){
+               busClassNewCount = busClassCount - 1;
+           }      
+           busClassInput.value = busClassNewCount;
+           let busClassTotal = 0;
+           if(busSeat == 'first'){
+             busClassTotal = busClassNewCount * 150;
+           }
+           if(busSeat == 'economy'){
+            busClassTotal = busClassNewCount * 100;
+           }
+
+             calculateTotal();
+        }
+
+        function calculateTotal(){
+            const firsClassBus = getInputValue('first');
+            const economyBus = getInputValue('economy');
+
+            const subTotal = firsClassBus * 150 + economyBus * 100;
+            document.getElementById('sub-total').innerText = '$' + subTotal;
+
+            const tax = Math.round(subTotal * 0.1);
+            document.getElementById('tax-amount').innerText = '$' + tax;
+
+            const TotalCost = subTotal+ tax;
+            document.getElementById('total-price').innerText  = '$' + TotalCost;
+        }
+
+        function getInputValue(busSeat){
+               const BusSeatInput = document.getElementById(busSeat + '-count');
+               const BusSeatCount = parseInt(BusSeatInput.value);
+               return BusSeatCount;
+          }
+    </script> 
+   
 </body>
 
 </html>
